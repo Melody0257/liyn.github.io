@@ -1,0 +1,295 @@
+﻿﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二道河水库工程管理系统 - Pencil设计指南</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f7fa; }
+    
+    .design-container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+    
+    .section { background: white; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .section-title { font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; }
+    
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+    .color-item { padding: 16px; border-radius: 12px; text-align: center; }
+    .color-hex { font-size: 13px; color: #6b7280; margin-top: 8px; font-family: monospace; }
+    .color-name { font-size: 12px; color: #9ca3af; margin-top: 4px; }
+    
+    .font-table { width: 100%; border-collapse: collapse; }
+    .font-table th, .font-table td { padding: 12px; text-align: left; border-bottom: 1px solid #f3f4f6; }
+    .font-table th { background: #f9fafb; font-weight: 600; color: #4b5563; }
+    .font-table td { font-size: 14px; }
+    
+    .component-preview { display: flex; gap: 16px; flex-wrap: wrap; }
+    .component-item { padding: 16px; background: #f9fafb; border-radius: 12px; min-width: 200px; }
+    .component-item:hover { background: #f3f4f6; }
+    .component-label { font-size: 12px; color: #6b7280; margin-top: 8px; }
+    
+    .layout-preview { display: flex; gap: 16px; }
+    .sidebar-demo { width: 260px; background: linear-gradient(180deg, #1e3a5f 0%, #2d5a87 100%); border-radius: 12px; color: white; padding: 20px; }
+    .sidebar-header { padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 16px; }
+    .sidebar-menu { list-style: none; }
+    .sidebar-menu li { padding: 10px 12px; border-radius: 8px; margin-bottom: 4px; cursor: pointer; }
+    .sidebar-menu li:hover { background: rgba(255,255,255,0.1); }
+    .sidebar-menu li.active { background: rgba(255,255,255,0.15); }
+    
+    .main-demo { flex: 1; background: #f3f4f6; border-radius: 12px; padding: 20px; }
+    .header-demo { background: white; padding: 16px; border-radius: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+    .search-demo { flex: 1; max-width: 300px; padding: 10px 16px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 14px; }
+    
+    .stats-demo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+    .stat-demo { background: white; padding: 16px; border-radius: 12px; }
+    
+    .panels-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .panel-demo { background: white; border-radius: 12px; overflow: hidden; }
+    .panel-header-demo { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; }
+    .panel-content-demo { padding: 16px; }
+    
+    .icon-reference { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+    .icon-item { text-align: center; padding: 12px; background: #f9fafb; border-radius: 8px; }
+    .icon-item i { font-size: 24px; color: #6b7280; }
+    .icon-label { font-size: 11px; color: #9ca3af; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="design-container">
+    <div class="section">
+      <div class="section-title">配色方案</div>
+      <div class="color-grid">
+        <div class="color-item" style="background: linear-gradient(180deg, #1e3a5f 0%, #2d5a87 100%); color: white;">
+          <div class="color-hex">#1e3a5f → #2d5a87</div>
+          <div class="color-name">侧边栏背景渐变</div>
+        </div>
+        <div class="color-item" style="background: #f5f7fa;">
+          <div class="color-hex">#f5f7fa</div>
+          <div class="color-name">主背景色</div>
+        </div>
+        <div class="color-item" style="background: #ffffff; border: 1px solid #e5e7eb;">
+          <div class="color-hex">#ffffff</div>
+          <div class="color-name">卡片背景</div>
+        </div>
+        <div class="color-item" style="background: #3b82f6;">
+          <div class="color-hex">#3b82f6</div>
+          <div class="color-name">主色调/蓝色</div>
+        </div>
+        <div class="color-item" style="background: #22c55e;">
+          <div class="color-hex">#22c55e</div>
+          <div class="color-name">成功色/绿色</div>
+        </div>
+        <div class="color-item" style="background: #f97316;">
+          <div class="color-hex">#f97316</div>
+          <div class="color-name">警告色/橙色</div>
+        </div>
+        <div class="color-item" style="background: #8b5cf6;">
+          <div class="color-hex">#8b5cf6</div>
+          <div class="color-name">紫色</div>
+        </div>
+        <div class="color-item" style="background: #1f2937;">
+          <div class="color-hex">#1f2937</div>
+          <div class="color-name">主文字色</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">字体规范</div>
+      <table class="font-table">
+        <thead>
+          <tr><th>用途</th><th>字号</th><th>字重</th><th>颜色</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>页面标题</td><td>24px</td><td>600</td><td>#1f2937</td></tr>
+          <tr><td>面板标题</td><td>16px</td><td>600</td><td>#1f2937</td></tr>
+          <tr><td>正文/菜单</td><td>14px</td><td>400</td><td>#374151</td></tr>
+          <tr><td>辅助文字</td><td>12-13px</td><td>400</td><td>#6b7280</td></tr>
+          <tr><td>统计数值</td><td>28px</td><td>700</td><td>#1f2937</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">布局尺寸</div>
+      <div class="component-preview">
+        <div class="component-item">
+          <div style="font-weight: 600; color: #1f2937;">侧边栏宽度</div>
+          <div class="component-label">260px (展开) / 64px (折叠)</div>
+        </div>
+        <div class="component-item">
+          <div style="font-weight: 600; color: #1f2937;">卡片圆角</div>
+          <div class="component-label">16px</div>
+        </div>
+        <div class="component-item">
+          <div style="font-weight: 600; color: #1f2937;">统计卡片宽</div>
+          <div class="component-label">240px (最小)</div>
+        </div>
+        <div class="component-item">
+          <div style="font-weight: 600; color: #1f2937;">图标尺寸</div>
+          <div class="component-label">44px × 44px</div>
+        </div>
+        <div class="component-item">
+          <div style="font-weight: 600; color: #1f2937;">面板内边距</div>
+          <div class="component-label">20px 24px</div>
+        </div>
+        <div class="component-item">
+          <div style="font-weight: 600; color: #1f2937;">网格间距</div>
+          <div class="component-label">16-24px</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">布局预览</div>
+      <div class="layout-preview">
+        <div class="sidebar-demo">
+          <div class="sidebar-header">
+            <div style="font-size: 16px; font-weight: 600;">二道河水库</div>
+            <div style="font-size: 11px; opacity: 0.7;">工程管理系统</div>
+          </div>
+          <ul class="sidebar-menu">
+            <li class="active"><i class="fa-solid fa-home" style="margin-right: 10px;"></i>首页</li>
+            <li><i class="fa-solid fa-folder-open" style="margin-right: 10px;"></i>项目管理</li>
+            <li><i class="fa-solid fa-file-text" style="margin-right: 10px;"></i>工作简报</li>
+            <li><i class="fa-solid fa-chart-line" style="margin-right: 10px;"></i>工作进度</li>
+            <li><i class="fa-solid fa-dollar-sign" style="margin-right: 10px;"></i>移民资金</li>
+          </ul>
+          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-weight: 600;">A</div>
+              <div>
+                <div style="font-size: 13px; font-weight: 500;">admin</div>
+                <div style="font-size: 11px; opacity: 0.7;">系统管理员</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-demo">
+          <div class="header-demo">
+            <div class="search-demo">搜索项目、文档、人员...</div>
+            <div style="display: flex; gap: 12px;">
+              <i class="fa-solid fa-bell" style="font-size: 18px; color: #6b7280;"></i>
+              <i class="fa-solid fa-gear" style="font-size: 18px; color: #6b7280;"></i>
+            </div>
+          </div>
+
+          <div style="font-size: 20px; font-weight: 600; color: #1f2937; margin-bottom: 4px;">工程概览</div>
+          <div style="font-size: 13px; color: #6b7280; margin-bottom: 16px;">欢迎回来，admin！这是今天的工程进展汇总</div>
+
+          <div class="stats-demo">
+            <div class="stat-demo">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #f3e8ff, #ddd6fe); display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                <i class="fa-solid fa-building" style="color: #8b5cf6; font-size: 18px;"></i>
+              </div>
+              <div style="font-size: 24px; font-weight: 700; color: #1f2937;">12</div>
+              <div style="font-size: 12px; color: #6b7280;">在建项目</div>
+            </div>
+            <div class="stat-demo">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                <i class="fa-solid fa-users" style="color: #3b82f6; font-size: 18px;"></i>
+              </div>
+              <div style="font-size: 24px; font-weight: 700; color: #1f2937;">1,258</div>
+              <div style="font-size: 12px; color: #6b7280;">移民安置</div>
+            </div>
+            <div class="stat-demo">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #dcfce7, #bbf7d0); display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                <i class="fa-solid fa-check-circle" style="color: #22c55e; font-size: 18px;"></i>
+              </div>
+              <div style="font-size: 24px; font-weight: 700; color: #1f2937;">78%</div>
+              <div style="font-size: 12px; color: #6b7280;">工程进度</div>
+            </div>
+            <div class="stat-demo">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, #ffedd5, #fed7aa); display: flex; align-items: center; justify-content: center; margin-bottom: 8px;">
+                <i class="fa-solid fa-dollar-sign" style="color: #f97316; font-size: 18px;"></i>
+              </div>
+              <div style="font-size: 24px; font-weight: 700; color: #1f2937;">¥2.3亿</div>
+              <div style="font-size: 12px; color: #6b7280;">资金投入</div>
+            </div>
+          </div>
+
+          <div class="panels-demo">
+            <div class="panel-demo">
+              <div class="panel-header-demo">
+                <span style="font-weight: 600; font-size: 14px;">项目进展</span>
+                <span style="font-size: 12px; color: #3b82f6;">查看全部</span>
+              </div>
+              <div class="panel-content-demo">
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px;">项目列表...</div>
+              </div>
+            </div>
+            <div class="panel-demo">
+              <div class="panel-header-demo">
+                <span style="font-weight: 600; font-size: 14px;">进度统计</span>
+                <span style="font-size: 12px; color: #3b82f6;">详细报告</span>
+              </div>
+              <div class="panel-content-demo">
+                <div style="padding: 10px; border-radius: 8px;">进度条...</div>
+              </div>
+            </div>
+            <div class="panel-demo">
+              <div class="panel-header-demo">
+                <span style="font-weight: 600; font-size: 14px;">工程动态</span>
+                <span style="font-size: 12px; color: #3b82f6;">更多</span>
+              </div>
+              <div class="panel-content-demo">
+                <div style="padding: 10px; border-radius: 8px; margin-bottom: 8px;">新闻列表...</div>
+              </div>
+            </div>
+            <div class="panel-demo">
+              <div class="panel-header-demo">
+                <span style="font-weight: 600; font-size: 14px;">快捷操作</span>
+              </div>
+              <div class="panel-content-demo">
+                <div style="display: grid; grid-template-columns: repeat(2,1fr); gap: 8px;">
+                  <div style="padding: 12px; background: #f9fafb; border-radius: 8px; text-align: center;">操作1</div>
+                  <div style="padding: 12px; background: #f9fafb; border-radius: 8px; text-align: center;">操作2</div>
+                  <div style="padding: 12px; background: #f9fafb; border-radius: 8px; text-align: center;">操作3</div>
+                  <div style="padding: 12px; background: #f9fafb; border-radius: 8px; text-align: center;">操作4</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">图标清单</div>
+      <div class="icon-reference">
+        <div class="icon-item"><i class="fa-solid fa-home"></i><div class="icon-label">首页</div></div>
+        <div class="icon-item"><i class="fa-solid fa-folder-open"></i><div class="icon-label">项目管理</div></div>
+        <div class="icon-item"><i class="fa-solid fa-file-text"></i><div class="icon-label">工作简报</div></div>
+        <div class="icon-item"><i class="fa-solid fa-chart-line"></i><div class="icon-label">工作进度</div></div>
+        <div class="icon-item"><i class="fa-solid fa-dollar-sign"></i><div class="icon-label">移民资金</div></div>
+        <div class="icon-item"><i class="fa-solid fa-calendar"></i><div class="icon-label">大事记</div></div>
+        <div class="icon-item"><i class="fa-solid fa-users"></i><div class="icon-label">通讯录</div></div>
+        <div class="icon-item"><i class="fa-solid fa-map"></i><div class="icon-label">地图管理</div></div>
+        <div class="icon-item"><i class="fa-solid fa-building"></i><div class="icon-label">建筑</div></div>
+        <div class="icon-item"><i class="fa-solid fa-check-circle"></i><div class="icon-label">完成</div></div>
+        <div class="icon-item"><i class="fa-solid fa-search"></i><div class="icon-label">搜索</div></div>
+        <div class="icon-item"><i class="fa-solid fa-bell"></i><div class="icon-label">通知</div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Pencil临摹步骤</div>
+      <ol style="padding-left: 20px; font-size: 14px; color: #4b5563; line-height: 1.8;">
+        <li><strong>创建画布</strong>：设置宽度约1400px，高度约900px</li>
+        <li><strong>绘制侧边栏</strong>：矩形(260px × 画布高度)，填充深蓝色渐变</li>
+        <li><strong>添加Logo区域</strong>：白色文字，标题16px粗体，副标题11px浅色</li>
+        <li><strong>添加菜单项</strong>：图标+文字，间距10px，hover效果用半透明遮罩</li>
+        <li><strong>添加用户信息</strong>：圆形头像+用户名+角色</li>
+        <li><strong>绘制顶部导航</strong>：搜索框(左)+图标按钮(右)</li>
+        <li><strong>添加页面标题</strong>：主标题24px粗体，副标题14px灰色</li>
+        <li><strong>绘制统计卡片</strong>：4列网格，圆角16px，悬停上移效果</li>
+        <li><strong>绘制内容面板</strong>：2×2网格，每个面板含标题栏和内容区</li>
+        <li><strong>添加交互元素</strong>：按钮、进度条、列表项</li>
+      </ol>
+    </div>
+  </div>
+</body>
+</html>

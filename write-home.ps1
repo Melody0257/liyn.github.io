@@ -1,0 +1,610 @@
+$content = @"
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>建设征地移民实物调查管理系统 - 首页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      min-height: 100vh;
+    }
+    .header {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: white;
+      box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+    }
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    .main-content {
+      padding: 32px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    .page-title {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .page-title h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+    }
+    .page-title p {
+      font-size: 15px;
+      color: #6b7280;
+    }
+    .collapse-section {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .collapse-header {
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .collapse-header:hover {
+      background: #f9fafb;
+    }
+    .collapse-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .collapse-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .collapse-icon.gold {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      color: #d97706;
+    }
+    .collapse-icon.green {
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      color: #16a34a;
+    }
+    .collapse-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1f2937;
+    }
+    .collapse-arrow {
+      font-size: 18px;
+      color: #9ca3af;
+      transition: transform 0.3s ease;
+    }
+    .collapse-arrow.expanded {
+      transform: rotate(180deg);
+    }
+    .collapse-content {
+      padding: 0 28px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      max-height: 0;
+    }
+    .collapse-content.expanded {
+      max-height: 8000px;
+      padding: 0 28px 28px;
+    }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .chart-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border: 1px solid #f3f4f6;
+    }
+    .chart-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .mini-chart-container {
+      height: 160px;
+    }
+    .section-divider {
+      margin: 24px 0 16px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+      border-radius: 12px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .section-divider span {
+      margin-right: 10px;
+    }
+    .two-column-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding-top: 20px;
+    }
+    .column-section {
+      background: #f9fafb;
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .column-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e3a5f;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    .facility-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding-top: 20px;
+    }
+    .enterprise-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 28px;
+      display: flex;
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .enterprise-column {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+      border-radius: 16px;
+      background: #f9fafb;
+    }
+    .enterprise-value {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1e3a5f;
+    }
+    .enterprise-label {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .work-progress-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 28px;
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .work-progress-column {
+      flex: 1;
+      text-align: center;
+      padding: 20px;
+      border-radius: 16px;
+      background: #f9fafb;
+    }
+    .work-progress-value {
+      font-size: 48px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1e3a5f;
+    }
+    .work-progress-label {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding-top: 20px;
+    }
+    .stat-card {
+      background: linear-gradient(135deg, #f9fafb, #f3f4f6);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      position: relative;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1e3a5f, #2d5a87);
+    }
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #d97706;
+    }
+    .stat-label {
+      font-size: 14px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">🏛️</div>
+      <div class="header-title">建设征地移民实物调查管理系统</div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="page-title">
+      <h1>二道河水库工程</h1>
+      <p>建设征地移民实物调查数据管理平台</p>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleSection('data')">
+        <div class="collapse-title-row">
+          <div class="collapse-icon gold">📊</div>
+          <div class="collapse-title">重要数据</div>
+        </div>
+        <i class="fa-solid fa-chevron-down collapse-arrow expanded" id="arrow-data"></i>
+      </div>
+      <div class="collapse-content expanded" id="content-data">
+        <div class="two-column-layout">
+          <div class="column-section">
+            <div class="column-title">🌾 农村部分</div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <div class="chart-title">①搬迁人口分村统计</div>
+                <div class="mini-chart-container" id="ruralChart1"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">②搬迁人口分工程区</div>
+                <div class="mini-chart-container" id="ruralChart2"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">③人口按人员类型分布</div>
+                <div class="mini-chart-container" id="ruralChart3"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">④房屋调查分村统计</div>
+                <div class="mini-chart-container" id="ruralChart4"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">⑤房屋按结构分类</div>
+                <div class="mini-chart-container" id="ruralChart5"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="column-section">
+            <div class="column-title">🏙️ 城集镇部分</div>
+            <div class="chart-grid">
+              <div class="chart-card">
+                <div class="chart-title">①搬迁人口分村统计</div>
+                <div class="mini-chart-container" id="urbanChart1"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">②搬迁人口分工程区</div>
+                <div class="mini-chart-container" id="urbanChart2"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">③人口按人员类型分布</div>
+                <div class="mini-chart-container" id="urbanChart3"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">④房屋调查分村统计</div>
+                <div class="mini-chart-container" id="urbanChart4"></div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-title">⑤房屋按结构分类</div>
+                <div class="mini-chart-container" id="urbanChart5"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-divider">
+          <span>🏗️</span>专项设施
+        </div>
+        <div class="facility-grid">
+          <div class="chart-card">
+            <div class="chart-title">①交通专项设施(km)</div>
+            <div class="mini-chart-container" id="facilityChart1"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">②通信专项设施(km)</div>
+            <div class="mini-chart-container" id="facilityChart2"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">③电力专项设施(km)</div>
+            <div class="mini-chart-container" id="facilityChart3"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">④管道设施(km)</div>
+            <div class="mini-chart-container" id="facilityChart4"></div>
+          </div>
+        </div>
+
+        <div class="section-divider">
+          <span>🏢</span>企事业单位实物
+        </div>
+        <div class="enterprise-container">
+          <div class="enterprise-column">
+            <div class="enterprise-value">45</div>
+            <div class="enterprise-label">企事业单位户数</div>
+          </div>
+          <div class="enterprise-column">
+            <div class="enterprise-value">326</div>
+            <div class="enterprise-label">企事业单位人数</div>
+          </div>
+          <div class="enterprise-column">
+            <div class="enterprise-value">12,580</div>
+            <div class="enterprise-label">房屋面积(㎡)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapse-section">
+      <div class="collapse-header" onclick="toggleSection('progress')">
+        <div class="collapse-title-row">
+          <div class="collapse-icon green">📈</div>
+          <div class="collapse-title">工作进展</div>
+        </div>
+        <i class="fa-solid fa-chevron-down collapse-arrow expanded" id="arrow-progress"></i>
+      </div>
+      <div class="collapse-content expanded" id="content-progress">
+        <div class="work-progress-container">
+          <div class="work-progress-column">
+            <div class="work-progress-value">12</div>
+            <div class="work-progress-label">今日新增户数</div>
+          </div>
+          <div class="work-progress-column">
+            <div class="work-progress-value">38</div>
+            <div class="work-progress-label">今日新增人数</div>
+          </div>
+          <div class="work-progress-column">
+            <div class="work-progress-value">2,456</div>
+            <div class="work-progress-label">今日新增房屋面积(㎡)</div>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">1,258</div>
+            <div class="stat-label">已调查户数</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">3,896</div>
+            <div class="stat-label">已调查人口</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">45,628</div>
+            <div class="stat-label">已调查房屋面积(㎡)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">45</div>
+            <div class="stat-label">已调查个体工商户</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleSection(sectionId) {
+      const content = document.getElementById('content-' + sectionId);
+      const arrow = document.getElementById('arrow-' + sectionId);
+      content.classList.toggle('expanded');
+      arrow.classList.toggle('expanded');
+    }
+
+    function initCharts() {
+      const ruralChart1 = echarts.init(document.getElementById('ruralChart1'));
+      ruralChart1.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['张村', '李村', '王村', '赵村', '孙村'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: [285, 342, 218, 195, 218], itemStyle: { color: '#1e3a5f', borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const ruralChart2 = echarts.init(document.getElementById('ruralChart2'));
+      ruralChart2.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['户数', '人数'], top: 0, itemWidth: 12, itemHeight: 12, textStyle: { fontSize: 10 } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['枢纽区', '淹没区', '其他'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value' },
+        series: [
+          { name: '户数', type: 'bar', data: [456, 623, 179], itemStyle: { color: '#1e3a5f', borderRadius: [4, 4, 0, 0] } },
+          { name: '人数', type: 'bar', data: [1420, 1890, 586], itemStyle: { color: '#d97706', borderRadius: [4, 4, 0, 0] } }
+        ]
+      });
+
+      const ruralChart3 = echarts.init(document.getElementById('ruralChart3'));
+      ruralChart3.setOption({
+        tooltip: { trigger: 'item' },
+        legend: { orient: 'vertical', right: 5, top: 'center', itemGap: 4, textStyle: { fontSize: 10 } },
+        series: [{ type: 'pie', radius: ['40%', '70%'], itemStyle: { borderRadius: 8 }, label: { show: false },
+          data: [{ value: 65, name: '转非人员', itemStyle: { color: '#1e3a5f' } }, { value: 35, name: '超转人员', itemStyle: { color: '#d97706' } }]
+        }]
+      });
+
+      const ruralChart4 = echarts.init(document.getElementById('ruralChart4'));
+      ruralChart4.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['张村', '李村', '王村', '赵村', '孙村'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: [125, 148, 98, 89, 105], itemStyle: { color: '#1e3a5f', borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const ruralChart5 = echarts.init(document.getElementById('ruralChart5'));
+      ruralChart5.setOption({
+        tooltip: { trigger: 'item' },
+        legend: { orient: 'vertical', right: 5, top: 'center', itemGap: 4, textStyle: { fontSize: 10 } },
+        series: [{ type: 'pie', radius: ['40%', '70%'], itemStyle: { borderRadius: 8 }, label: { show: false },
+          data: [
+            { value: 25, name: '框架', itemStyle: { color: '#1e3a5f' } },
+            { value: 35, name: '砖混', itemStyle: { color: '#d97706' } },
+            { value: 22, name: '砖木', itemStyle: { color: '#9ca3af' } },
+            { value: 12, name: '土木', itemStyle: { color: '#3b82f6' } },
+            { value: 6, name: '简易', itemStyle: { color: '#22c55e' } }
+          ]
+        }]
+      });
+
+      const urbanChart1 = echarts.init(document.getElementById('urbanChart1'));
+      urbanChart1.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['城东', '城西', '城南', '城北', '城中'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: [185, 242, 168, 155, 188], itemStyle: { color: '#1e3a5f', borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const urbanChart2 = echarts.init(document.getElementById('urbanChart2'));
+      urbanChart2.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: ['户数', '人数'], top: 0, itemWidth: 12, itemHeight: 12, textStyle: { fontSize: 10 } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['枢纽区', '淹没区', '其他'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value' },
+        series: [
+          { name: '户数', type: 'bar', data: [256, 383, 95], itemStyle: { color: '#1e3a5f', borderRadius: [4, 4, 0, 0] } },
+          { name: '人数', type: 'bar', data: [780, 1150, 296], itemStyle: { color: '#d97706', borderRadius: [4, 4, 0, 0] } }
+        ]
+      });
+
+      const urbanChart3 = echarts.init(document.getElementById('urbanChart3'));
+      urbanChart3.setOption({
+        tooltip: { trigger: 'item' },
+        legend: { orient: 'vertical', right: 5, top: 'center', itemGap: 4, textStyle: { fontSize: 10 } },
+        series: [{ type: 'pie', radius: ['40%', '70%'], itemStyle: { borderRadius: 8 }, label: { show: false },
+          data: [{ value: 72, name: '转非人员', itemStyle: { color: '#1e3a5f' } }, { value: 28, name: '超转人员', itemStyle: { color: '#d97706' } }]
+        }]
+      });
+
+      const urbanChart4 = echarts.init(document.getElementById('urbanChart4'));
+      urbanChart4.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['城东', '城西', '城南', '城北', '城中'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value' },
+        series: [{ type: 'bar', data: [85, 98, 72, 65, 78], itemStyle: { color: '#1e3a5f', borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const urbanChart5 = echarts.init(document.getElementById('urbanChart5'));
+      urbanChart5.setOption({
+        tooltip: { trigger: 'item' },
+        legend: { orient: 'vertical', right: 5, top: 'center', itemGap: 4, textStyle: { fontSize: 10 } },
+        series: [{ type: 'pie', radius: ['40%', '70%'], itemStyle: { borderRadius: 8 }, label: { show: false },
+          data: [
+            { value: 35, name: '框架', itemStyle: { color: '#1e3a5f' } },
+            { value: 40, name: '砖混', itemStyle: { color: '#d97706' } },
+            { value: 15, name: '砖木', itemStyle: { color: '#9ca3af' } },
+            { value: 6, name: '土木', itemStyle: { color: '#3b82f6' } },
+            { value: 4, name: '简易', itemStyle: { color: '#22c55e' } }
+          ]
+        }]
+      });
+
+      const facilityChart1 = echarts.init(document.getElementById('facilityChart1'));
+      facilityChart1.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['铁路', '公路', '农村道路'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value', name: 'km', nameTextStyle: { fontSize: 10 } },
+        series: [{ type: 'bar', data: [15.5, 45.8, 64.7], itemStyle: { color: ['#1e3a5f', '#d97706', '#9ca3af'], borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const facilityChart2 = echarts.init(document.getElementById('facilityChart2'));
+      facilityChart2.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['移动', '联通', '电信', '广电'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value', name: 'km', nameTextStyle: { fontSize: 10 } },
+        series: [{ type: 'bar', data: [28.6, 22.4, 35.2, 12.8], itemStyle: { color: ['#1e3a5f', '#d97706', '#9ca3af', '#3b82f6'], borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const facilityChart3 = echarts.init(document.getElementById('facilityChart3'));
+      facilityChart3.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['500KV', '220KV', '110KV', '35KV', '10KV'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value', name: 'km', nameTextStyle: { fontSize: 10 } },
+        series: [{ type: 'bar', data: [5.2, 12.8, 28.5, 45.6, 89.2], itemStyle: { color: ['#1e3a5f', '#d97706', '#9ca3af', '#3b82f6', '#22c55e'], borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      const facilityChart4 = echarts.init(document.getElementById('facilityChart4'));
+      facilityChart4.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['燃气', '输水', '排水', '通信'], axisLabel: { fontSize: 10 } },
+        yAxis: { type: 'value', name: 'km', nameTextStyle: { fontSize: 10 } },
+        series: [{ type: 'bar', data: [18.5, 32.6, 45.8, 28.4], itemStyle: { color: ['#1e3a5f', '#d97706', '#9ca3af', '#3b82f6'], borderRadius: [4, 4, 0, 0] } }]
+      });
+
+      window.addEventListener('resize', () => {
+        ruralChart1.resize(); ruralChart2.resize(); ruralChart3.resize(); ruralChart4.resize(); ruralChart5.resize();
+        urbanChart1.resize(); urbanChart2.resize(); urbanChart3.resize(); urbanChart4.resize(); urbanChart5.resize();
+        facilityChart1.resize(); facilityChart2.resize(); facilityChart3.resize(); facilityChart4.resize();
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initCharts);
+  </script>
+</body>
+</html>
+"@
+Set-Content -Path "D:\Desktop\Trae_file\Xinxihua_1\home.html" -Value $content -Encoding UTF8
